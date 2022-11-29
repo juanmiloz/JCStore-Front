@@ -50,7 +50,7 @@ export default function SignUp() {
     const response = await CRUDService.post(newUser, USERS);
 
     //An easy way (maybe not the best) to check if the post request succeeded 
-    //since the method returns either user that has been saved or the error
+    //since the method returns either the user that has just been saved or the error
     if(newUser.email===response.email) {
         //<Navigate to="/" replace/>
         console.log("OK");
