@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import Image from 'mui-image'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
@@ -67,10 +66,10 @@ export default function SignInSide() {
               alignItems: 'center',
             }}
           >
-            
+
             {/* <Image src='../../../public/JCStore.svg'></Image> */}
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main'}}>
-                <LockOutlinedIcon />
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Welcome Back
@@ -115,7 +114,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="SignUp" variant="body2">
+                  <Link href="/SignUp" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

@@ -29,13 +29,32 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    
+    let url = "http://localhost:8080/users"
+
+    var res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'content-type': "application/json"
+      },
+      body: JSON.stringify({
+        "name": data.get('name'),
+        "age": data.get('age'),
+        "email": data.get('email'),
+        "password": data.get('password'),
+        "address": data.get('address'),
+        "phone": data.get('phone'),
+        "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
+      })
+    })
+    //var answer = await res.json()
+    console.log(res.status)
+    if(res.status === 200){
+      //<Navigate to="/" replace/>
+    }
   };
 
   return (
@@ -58,25 +77,25 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={8}>
+              <Grid item xs={12} sm={7}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
+                  id="name"
                   label="First Name"
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={5}>
                 <TextField
                   required
                   fullWidth
-                  id="age"
-                  label="Age"
-                  name="age"
-                  autoComplete="age"
+                  name="phone"
+                  label="Phone"
+                  id="phone"
+                  autoComplete="phone"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -121,13 +140,14 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
+              id='submitBtn'
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -139,3 +159,33 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
+
+
+/*const createUser = async () => {
+
+  let url = "http://localhost:8080/users"
+
+  let nameUser
+  let emailUser
+  let passwordUser
+  let addresUser
+  let phoneUser
+  let roleIdUser
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'content-type': "application/json"
+    },
+    body: JSON.stringify({
+      "name": idMother,
+      "email": idFather,
+      "password": nameTiger,
+      "addres": genderTiger,
+      "phone": weightTiger,
+      "roleId": ageTiger,
+    })
+  })
+  const answer = await res.json()
+}*/
