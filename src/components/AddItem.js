@@ -16,7 +16,7 @@ import Container from '@mui/material/Container';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
-import {CRUDService, ITEMS, USERS} from "../service/CRUDService";
+import {CRUDService, ITEMS} from "../service/CRUDService";
 
 
 function Copyright(props) {

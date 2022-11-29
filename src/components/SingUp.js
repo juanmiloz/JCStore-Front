@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+
+import {CRUDService, USERS} from "../service/CRUDService";
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,18 +32,12 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    
-    let url = "http://localhost:8080/users"
 
-    var res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'content-type': "application/json"
-      },
-      body: JSON.stringify({
+    const data = new FormData(event.currentTarget);
+    const newUser = {
         "name": data.get('name'),
         "age": data.get('age'),
         "email": data.get('email'),
@@ -48,13 +45,18 @@ export default function SignUp() {
         "address": data.get('address'),
         "phone": data.get('phone'),
         "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
-      })
-    })
-    //var answer = await res.json()
-    console.log(res.status)
-    if(res.status === 200){
-      //<Navigate to="/" replace/>
+      }
+
+    const response = await CRUDService.post(newUser, USERS);
+
+    //An easy way (maybe not the best) to check if the post request succeeded 
+    //since the method returns either user that has been saved or the error
+    if(newUser.email===response.email) {
+        //<Navigate to="/" replace/>
+        console.log("OK");
     }
+          
+
   };
 
   return (
