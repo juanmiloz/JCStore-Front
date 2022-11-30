@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,6 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Modal from '@mui/material/Modal';
 
 function Copyright(props) {
   return (
@@ -26,13 +25,28 @@ function Copyright(props) {
   );
 }
 
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const theme = createTheme();
 
 export default function SignUp() {
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => setOpen(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    
+
     let url = "http://localhost:8080/users"
 
     var res = await fetch(url, {
@@ -41,19 +55,23 @@ export default function SignUp() {
         'content-type': "application/json"
       },
       body: JSON.stringify({
-        "name": data.get('name'),
-        "age": data.get('age'),
-        "email": data.get('email'),
-        "password": data.get('password'),
-        "address": data.get('address'),
-        "phone": data.get('phone'),
+        "name": (data.get('name') === "") ? null : data.get('name'),
+        "age": (data.get('age') === "") ? null : data.get('age'),
+        "email": (data.get('email') === "") ? null : data.get('email'),
+        "password": (data.get('password') === "") ? null : data.get('password'),
+        "address": (data.get('address') === "") ? null : data.get('address'),
+        "phone": (data.get('phone') === "") ? null : data.get('phone'),
         "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
       })
     })
-    //var answer = await res.json()
-    console.log(res.status)
-    if(res.status === 200){
+    let answer = await res.json()
+    console.log(answer.code)
+    console.log(answer.message)
+    if (res.status === 200) {
       //<Navigate to="/" replace/>
+    } else {
+      setOpen(true);
+      //data.get('modal-modal-description') = answer.message
     }
   };
 
@@ -90,7 +108,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12} sm={5}>
                 <TextField
-                  required
                   fullWidth
                   name="phone"
                   label="Phone"
@@ -100,7 +117,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -121,7 +137,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
                   fullWidth
                   name="address"
                   label="Address"
@@ -129,12 +144,12 @@ export default function SignUp() {
                   autoComplete="address"
                 />
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Button
               type="submit"
@@ -153,6 +168,16 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
+          <Modal open={open} onClose={handleClose}
+            aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description"><Box sx={style}>
+              <Typography id="modal-modal-title" variant="h6" component="h2">
+                Error
+              </Typography>
+              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                Please verify al inputs
+              </Typography>
+            </Box>
+          </Modal>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
