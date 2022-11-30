@@ -11,12 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
-
-
-import {CRUDService, USERS} from "../service/CRUDService";
-
-
-import {CRUDService, USERS} from "../service/CRUDService";
+import { CRUDService, USERS } from "../service/CRUDService";
 
 function Copyright(props) {
   return (
@@ -52,24 +47,26 @@ export default function SignUp() {
 
     const data = new FormData(event.currentTarget);
     const newUser = {
-        "name": data.get('name'),
-        "age": data.get('age'),
-        "email": data.get('email'),
-        "password": data.get('password'),
-        "address": data.get('address'),
-        "phone": data.get('phone'),
-        "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
-      }
+      "name": data.get('name'),
+      "age": data.get('age'),
+      "email": data.get('email'),
+      "password": data.get('password'),
+      "address": data.get('address'),
+      "phone": data.get('phone'),
+      "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
+    }
 
     const response = await CRUDService.post(newUser, USERS);
 
     //An easy way (maybe not the best) to check if the post request succeeded 
     //since the method returns either the user that has just been saved or the error
-    if(newUser.email===response.email) {
-        //<Navigate to="/" replace/>
-        console.log("OK");
+    if (newUser.email === response.email) {
+      //<Navigate to="/" replace/>
+      console.log("OK");
+    } else {
+
     }
-          
+
 
   };
 
@@ -166,7 +163,7 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
-          <Modal open={open} onClose={handleClose}
+          <Modal 
             aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description"><Box sx={style}>
               <Typography id="modal-modal-title" variant="h6" component="h2">
                 Error
