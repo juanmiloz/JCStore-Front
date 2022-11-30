@@ -12,6 +12,12 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
 
+
+import {CRUDService, USERS} from "../service/CRUDService";
+
+
+import {CRUDService, USERS} from "../service/CRUDService";
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -40,39 +46,31 @@ const style = {
 const theme = createTheme();
 
 export default function SignUp() {
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-
-    let url = "http://localhost:8080/users"
-
-    var res = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'content-type': "application/json"
-      },
-      body: JSON.stringify({
-        "name": (data.get('name') === "") ? null : data.get('name'),
-        "age": (data.get('age') === "") ? null : data.get('age'),
-        "email": (data.get('email') === "") ? null : data.get('email'),
-        "password": (data.get('password') === "") ? null : data.get('password'),
-        "address": (data.get('address') === "") ? null : data.get('address'),
-        "phone": (data.get('phone') === "") ? null : data.get('phone'),
+    const newUser = {
+        "name": data.get('name'),
+        "age": data.get('age'),
+        "email": data.get('email'),
+        "password": data.get('password'),
+        "address": data.get('address'),
+        "phone": data.get('phone'),
         "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
-      })
-    })
-    let answer = await res.json()
-    console.log(answer.code)
-    console.log(answer.message)
-    if (res.status === 200) {
-      //<Navigate to="/" replace/>
-    } else {
-      setOpen(true);
-      //data.get('modal-modal-description') = answer.message
+      }
+
+    const response = await CRUDService.post(newUser, USERS);
+
+    //An easy way (maybe not the best) to check if the post request succeeded 
+    //since the method returns either the user that has just been saved or the error
+    if(newUser.email===response.email) {
+        //<Navigate to="/" replace/>
+        console.log("OK");
     }
+          
+
   };
 
   return (
