@@ -17,6 +17,7 @@ function App() {
         <Route path='/JCStore/*' element={<JCStore />}>
           <Route path='AddItem' element={<AddItem />} />
           <Route path='Products' element={<Products />} />
+          <Route path='MyOrders' element={"Componente my orders"} />
         </Route>
         <Route path='/*' element={<NotFound />} />
       </Routes>

@@ -12,9 +12,10 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Tooltip from '@mui/material/Tooltip';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'
 
-const pages = ['Products', 'My orders'];
+const pages = ['Products', 'My orders', 'Add Item'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -24,10 +25,21 @@ function ResponsiveAppBar() {
         setAnchorElNav(event.currentTarget);
     };
 
-    const handleCloseNavMenu = () => {
-        navigate("AddItem")
-        //setAnchorElNav(null);
+    const handleProductsNavMenu = () => {
+        navigate("Products")
     };
+
+    const handleMyOrdersNavMenu = () => {
+        navigate("MyOrders")
+    };
+
+    const handleAddItemNavMenu = () => {
+        navigate("AddItem")
+    };
+
+    const handlerLogoutMenu = () => {
+        navigate("/")
+    }
 
     return (
         <AppBar position="static">
@@ -74,13 +86,12 @@ function ResponsiveAppBar() {
                                 horizontal: 'left',
                             }}
                             open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
                             sx={{
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                                <MenuItem key={page}>
                                     <Typography textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
@@ -106,21 +117,40 @@ function ResponsiveAppBar() {
                         LOGO
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
+                        <Button
+                                key={"products"}
+                                onClick={handleProductsNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
-                                {page}
-                            </Button>
-                        ))}
+                                products
+                        </Button>
+                        <Button
+                                key={"myOrders"}
+                                onClick={handleMyOrdersNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                MyOrders
+                        </Button>
+                        <Button
+                                key={"myOrders"}
+                                onClick={handleAddItemNavMenu}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Add Products
+                        </Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
+                        <Tooltip title="Add to car">
                             <IconButton size="medium" sx={{ p: 0, color: "white" }}>
                                 <AddShoppingCartIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                    <Box sx={{ flexGrow: 0, paddingLeft: 2}}>
+                        <Tooltip title="Log out">
+                            <IconButton size="medium"onClick={handlerLogoutMenu} sx={{ p: 0, color: "white" }}>
+                                <LogoutIcon></LogoutIcon>
                             </IconButton>
                         </Tooltip>
                     </Box>

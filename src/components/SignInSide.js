@@ -43,6 +43,7 @@ export default function SignInSide() {
     
     const response = await CRUDService.post(login, LOGIN);
     if(response.token != null){
+      localStorage.setItem("webToken",response.token)
       navigate('/JCStore')
     }
 
