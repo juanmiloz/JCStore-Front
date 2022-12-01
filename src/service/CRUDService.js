@@ -11,9 +11,10 @@ export class CRUDService {
     static getAll(serviceRoute) {
 
         const url = this.baseUrl + serviceRoute;
-
+        const config = this.getHeaderConfig();
+        
         return axios.get(
-            url
+            url, config
         ).then(res => res.data);
     }
 
@@ -21,9 +22,10 @@ export class CRUDService {
 
 
         const url = this.baseUrl + serviceRoute;
+        const config = this.getHeaderConfig();
 
 
-        return axios.post(url, newItem)
+        return axios.post(url, newItem, config)
             .then(res => res.data)
             .catch(function(error) {
                 if (error.response) {
@@ -39,6 +41,18 @@ export class CRUDService {
                 }
 
             });
+
+    }
+
+    static getHeaderConfig(){
+
+        const webToken = localStorage.getItem("webToken")?localStorage.getItem("webToken"):'';
+
+        const config = {
+            headers: { Authorization: 'Bearer '+ webToken}
+        };
+
+        return config;
 
     }
 
