@@ -14,51 +14,91 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import storage from '../firebase/config';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "@firebase/storage";
+import { useState } from 'react';
 
 
 import {CRUDService, ITEMS} from "../service/CRUDService";
-
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { v4 as generateRandomUUID } from 'uuid';
 
 
 const theme = createTheme();
-
+const DEFAULT_IMAGE_LINK = 'https://firebasestorage.googleapis.com/v0/b/jc-store-9e701.appspot.com/o/default.jpeg?alt=media&token=2acf5f7f-9755-4e92-8c54-f76ed9024c82';
+const ITEM_SAVED_MSG = "the item has been successfully saved!"
 
 export default function AddItem() {
+
+  //We set the default image link
+  const [currentImageFile, setImageFile] = useState(DEFAULT_IMAGE_LINK);
+
+  const handleInputFileChange = (event) => {
+    // Seting the new image...
+    setImageFile(event.target.files[0]);
+    console.log(event.target.files[0]);
+    console.log(currentImageFile);
+  };
 
   const handleSaveItem = async (event) => {
 
     event.preventDefault();
+
+     console.log(currentImageFile);
 
     const data = new FormData(event.currentTarget);
     const newItem = {
       "name":data.get('name'),
       "description":data.get('description'),
       "price": data.get("price"),
+      "url":DEFAULT_IMAGE_LINK
     }
 
+    if(currentImageFile === DEFAULT_IMAGE_LINK){
+
+      //Posting an item without any image
+      let reponse =  CRUDService.post(newItem, ITEMS).then((response)=>{
+        alert(ITEM_SAVED_MSG);
+      });;
+
+
+    }else{
+      //Posting an item with an image
+
+      // First we need to upload the item image to the store before saving
+      // the user in the backend to get the image url
+      const itemImageId = generateRandomUUID();
+      const storageRef = ref(storage, 'itemsImages/'+itemImageId);
+
+      uploadBytes(storageRef, currentImageFile).then((snapshot) => {
+
+        getDownloadURL(storageRef).then((url) => {
+
+          newItem.url = url;
+          console.log(url);
+          CRUDService.post(newItem, ITEMS).then((response)=>{
+            setImageFile(DEFAULT_IMAGE_LINK);
+            alert(ITEM_SAVED_MSG);
+          });
+         
+        });
+       
+      });
+
+
+    }
+
+  
+ 
+  
+
+
+
+
+
+    
     //Post an newItem using CRUDService
-    let reponse = await CRUDService.post(newItem, ITEMS);
-    //Get all items using CRUDService
-    console.log(CRUDService.getAll(ITEMS));
-
-    //Post an newuser using CRUDService
-    //CRUDService.post(newUser, USERS);
-    //Get all users using CRUDService
-    //console.log(CRUDService.getAll(USERS));
-
+    //let reponse = await CRUDService.post(newItem, ITEMS);
+;
 
 
 
@@ -119,6 +159,12 @@ export default function AddItem() {
              
                 />
               </Grid>
+              <Grid item xs={12}>
+                  <div className="row row--centered">
+                      <p style={{"marginRight": "10px"}}>Add image</p>
+                      <input type="file" accept="image/*" onChange={handleInputFileChange}/>
+                  </div>
+              </Grid>
         
             
             </Grid>
@@ -134,7 +180,7 @@ export default function AddItem() {
            
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+
       </Container>
     </ThemeProvider>
   );
