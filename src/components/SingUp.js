@@ -10,8 +10,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Modal from '@mui/material/Modal';
 import { CRUDService, USERS } from "../service/CRUDService";
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -26,26 +26,41 @@ function Copyright(props) {
   );
 }
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
-
 const theme = createTheme();
 
 export default function SignUp() {
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
+    
+    /*
+    let url = "http://localhost:8080/users"
+    var res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'content-type': "application/json"
+      },
+      body: JSON.stringify({
+        "name": data.get('name'),
+        "age": data.get('age'),
+        "email": data.get('email'),
+        "password": data.get('password'),
+        "address": data.get('address'),
+        "phone": data.get('phone'),
+        "name": (data.get('name') === "") ? null : data.get('name'),
+        "age": (data.get('age') === "") ? null : data.get('age'),
+        "email": (data.get('email') === "") ? null : data.get('email'),
+        "password": (data.get('password') === "") ? null : data.get('password'),
+        "address": (data.get('address') === "") ? null : data.get('address'),
+        "phone": (data.get('phone') === "") ? null : data.get('phone'),
+        "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
+      })
+    })
+    console.log(res.status)*/
     const newUser = {
       "name": data.get('name'),
       "age": data.get('age'),
@@ -61,10 +76,9 @@ export default function SignUp() {
     //An easy way (maybe not the best) to check if the post request succeeded 
     //since the method returns either the user that has just been saved or the error
     if (newUser.email === response.email) {
-      //<Navigate to="/" replace/>
-      console.log("OK");
+      navigate('/')
     } else {
-
+      
     }
 
 
@@ -163,16 +177,6 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
-          <Modal 
-            aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description"><Box sx={style}>
-              <Typography id="modal-modal-title" variant="h6" component="h2">
-                Error
-              </Typography>
-              <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                Please verify al inputs
-              </Typography>
-            </Box>
-          </Modal>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>

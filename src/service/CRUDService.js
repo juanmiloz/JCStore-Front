@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const ITEMS = 'items';
 export const USERS = 'users';
+export const LOGIN = 'auth';
 
 export class CRUDService {
 
