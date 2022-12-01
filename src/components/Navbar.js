@@ -16,6 +16,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'
 
 const pages = ['Products', 'My orders', 'Add Item'];
+const roleBuyer = "7832c0fe-d0f0-425a-8d36-d32693c57aff";
+const roleAdmin = "cbe5ea52-0edb-4d2e-a883-1488f1520b20";
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -38,8 +40,22 @@ function ResponsiveAppBar() {
     };
 
     const handlerLogoutMenu = () => {
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("webToken");
         navigate("/")
     }
+
+    const userRole = async () =>{
+        var currentUser = await JSON.parse(localStorage.getItem("currentUser"))
+    
+        if(currentUser.role.roleId === roleBuyer){
+            console.log("cliente")
+        }else if(currentUser.role.roleId === roleAdmin){
+            console.log("admin")
+        }
+    }
+
+    userRole();
 
     return (
         <AppBar position="static">
@@ -132,7 +148,7 @@ function ResponsiveAppBar() {
                                 MyOrders
                         </Button>
                         <Button
-                                key={"myOrders"}
+                                key={"addProduct"}
                                 onClick={handleAddItemNavMenu}
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >

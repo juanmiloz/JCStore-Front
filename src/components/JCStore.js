@@ -1,4 +1,4 @@
-import { /*Link,*/ Outlet/*,useNavigate*/ } from 'react-router-dom'
+import { Outlet} from 'react-router-dom'
 import {default as Navbar} from './Navbar'
 import jwt_decode from 'jwt-decode'
 
@@ -21,7 +21,8 @@ export default function JCStore() {
             }
         })
         const answer = await res.json()
-        console.log(answer)
+        
+        localStorage.setItem("currentUser",JSON.stringify(answer))
     }
     
     getUser();
