@@ -24,6 +24,7 @@ const ORDER_SAVED_MSG = "The order has been successfully saved!"
 export default function NewOrder() {
 
     const [itemsQuantity, setItemsQuantity] = useState([])
+    const [finalOrder, setFinalOrder] = useState(null)
 
     const currentCar = localStorage.getItem("currentCar");
     const currentCarMap = new Map(JSON.parse(currentCar));
@@ -48,7 +49,10 @@ export default function NewOrder() {
         })
 
         localStorage.setItem("currentCar", null)
+        setFinalOrder(response)
     }
+
+
 
     useLayoutEffect(() => {
         setItemsQuantity(carMapToList(currentCarMap))
@@ -120,6 +124,23 @@ export default function NewOrder() {
                         </Button>
 
                     </Box>
+                    {finalOrder != null &&
+                    <Box
+                        sx={{
+                            marginTop: 8,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Typography component="h1" variant="h5">
+                            Total: {finalOrder.total}
+                        </Typography>
+                        <Typography component="p">
+                            Your order has been confirmed
+                        </Typography>
+                    </Box>
+                    }
                 </Container>
             </ThemeProvider>
         </div>
