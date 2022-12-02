@@ -64,7 +64,7 @@ function ResponsiveAppBar() {
         navigate('Users')
     }
 
-    const userRole = async () =>{
+    const userRole = async () => {
         var currentUser = await JSON.parse(localStorage.getItem("currentUser"))
         var currentRole = await currentUser.role.roleId
 
@@ -76,10 +76,10 @@ function ResponsiveAppBar() {
             console.log("admin")
         }
     }
-    setTimeout(()=>{
-        userRole(); 
+    setTimeout(() => {
+        userRole();
     }, 2000)
-    
+
 
     return (
         <AppBar position="static">
@@ -201,20 +201,27 @@ function ResponsiveAppBar() {
                             </IconButton>
                         </Tooltip>
                     </Box>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Users">
-                            <IconButton size="medium" onClick={handlerUsers} sx={{ p: 0, color: "white" }}>
-                                <PersonIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="New Admin">
-                            <IconButton size="medium" onClick={handlerNewAdmin} sx={{ p: 0, color: "white" }}>
-                                <AdminPanelSettingsIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
+                    {
+                        isAdmin ?
+                            <div className='div-admin-function'>
+                                <Box sx={{ flexGrow: 0 }}>
+                                    <Tooltip title="Users">
+                                        <IconButton size="medium" onClick={handlerUsers} sx={{ p: 0, color: "white" }}>
+                                            <PersonIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
+                                <Box sx={{ flexGrow: 0 }}>
+                                    <Tooltip title="New Admin">
+                                        <IconButton size="medium" onClick={handlerNewAdmin} sx={{ p: 0, color: "white" }}>
+                                            <AdminPanelSettingsIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </Box>
+                            </div>
+                            :
+                            null
+                    }
                     <Box sx={{ flexGrow: 0, paddingLeft: 2 }}>
                         <Tooltip title="Log out">
                             <IconButton size="medium" onClick={handlerLogoutMenu} sx={{ p: 0, color: "white" }}>
