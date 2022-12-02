@@ -6,30 +6,73 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useEffect } from "react";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import { useState } from 'react';
+import {CRUDService, ITEMS} from "../service/CRUDService";
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const theme = createTheme();
 
+
+
+
 export default function Products() {
+
+  const saveItemInLocalStorage = (item) =>{
+
+
+    let currentCar = localStorage.getItem("currentCar");
+
+    let currentCarMap = new Map();
+
+    if(currentCar == null){
+      createItemInCar(item, currentCarMap);
+
+    }else{
+
+      currentCarMap = new Map(JSON.parse(currentCar));
+      if(currentCarMap.get(item.itemId)==null){
+        createItemInCar(item, currentCarMap);
+      }else{
+        let quantity = currentCarMap.get(item.itemId).quantity;
+        let itemTuple = {
+          item,
+          "quantity":quantity+1
+        }
+        currentCarMap.set(item.itemId, itemTuple)
+
+      }
+
+    }
+
+    let currentCarSerialized = JSON.stringify(Array.from(currentCarMap.entries()));
+    localStorage.setItem("currentCar", currentCarSerialized);
+  }
+
+
+  const createItemInCar = (item, currentCarMap) =>{
+    
+      let itemTuple = {
+        item,
+        "quantity":1
+      }
+      currentCarMap.set(item.itemId, itemTuple);
+  }
+
+  const [currentCards, setCurrentCards] = useState([]);
+
+  useEffect(() => {
+  CRUDService.getAll(ITEMS).then((items)=>{
+      setCurrentCards(items);
+  });
+
+
+});
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -39,32 +82,33 @@ export default function Products() {
         <Container sx={{ py: 8 }} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
+            {currentCards.map((card) => (
+              <Grid item key={card.itemId} xs={12} sm={6} md={4}>
                 <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                  sx={{  display: 'flex', flexDirection: 'column' }}
                 >
                   <CardMedia
                     component="img"
-                    sx={{
-                      // 16:9
-                      pt: '56.25%',
-                    }}
-                    image="https://source.unsplash.com/random"
+               
+                    image={card.url}
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                      <strong>{card.name}</strong>
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
+                      {card.description}
+                    </Typography>
+                    <Typography>
+                      <strong>${card.price}</strong>
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small">Add to car</Button>
-                    <Button size="small">Inspeccionar</Button>
+                    <Button size="small" onClick={()=>{
+                      saveItemInLocalStorage(card)
+                    }}>Add to car</Button>
+           
                   </CardActions>
                 </Card>
               </Grid>
@@ -72,22 +116,7 @@ export default function Products() {
           </Grid>
         </Container>
       </main>
-      {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </Box>
-      {/* End footer */}
+     
     </ThemeProvider>
   );
 }

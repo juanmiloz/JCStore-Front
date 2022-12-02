@@ -22,17 +22,22 @@ const theme = createTheme();
 const DEFAULT_IMAGE_LINK = 'https://firebasestorage.googleapis.com/v0/b/jc-store-9e701.appspot.com/o/default.jpeg?alt=media&token=2acf5f7f-9755-4e92-8c54-f76ed9024c82';
 const ITEM_SAVED_MSG = "the item has been successfully saved!"
 
+
 export default function AddItem() {
 
   //We set the default image link
   const [currentImageFile, setImageFile] = useState(DEFAULT_IMAGE_LINK);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState('');
 
   const handleInputFileChange = (event) => {
     // Seting the new image...
     setImageFile(event.target.files[0]);
-    console.log(event.target.files[0]);
-    console.log(currentImageFile);
+
   };
+
+
 
   const handleSaveItem = async (event) => {
 
@@ -52,6 +57,7 @@ export default function AddItem() {
 
       //Posting an item without any image
       let reponse =  CRUDService.post(newItem, ITEMS).then((response)=>{
+
         alert(ITEM_SAVED_MSG);
       });
 
@@ -130,7 +136,9 @@ export default function AddItem() {
                   fullWidth
                   id="name"
                   label="Name"
-                  autoFocus
+         
+    
+       
                 />
               </Grid>
              

@@ -11,7 +11,9 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Tooltip from '@mui/material/Tooltip';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PersonIcon from '@mui/icons-material/Person';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'
 
@@ -50,7 +52,19 @@ function ResponsiveAppBar() {
         navigate("/")
     }
 
-    const userRole = async () => {
+    const handlerNewOrder = () => {
+        navigate('NewOrder')
+    }
+
+    const handlerNewAdmin = () => {
+        navigate('NewAdmin')
+    }
+
+    const handlerUsers = () => {
+        navigate('Users')
+    }
+
+    const userRole = async () =>{
         var currentUser = await JSON.parse(localStorage.getItem("currentUser"))
         var currentRole = await currentUser.role.roleId
 
@@ -181,9 +195,23 @@ function ResponsiveAppBar() {
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Add to car">
-                            <IconButton size="medium" sx={{ p: 0, color: "white" }}>
-                                <AddShoppingCartIcon />
+                        <Tooltip title="Shopping car">
+                            <IconButton size="medium" onClick={handlerNewOrder} sx={{ p: 0, color: "white" }}>
+                                <ShoppingCartIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                    <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="Users">
+                            <IconButton size="medium" onClick={handlerUsers} sx={{ p: 0, color: "white" }}>
+                                <PersonIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                    <Box sx={{ flexGrow: 0 }}>
+                        <Tooltip title="New Admin">
+                            <IconButton size="medium" onClick={handlerNewAdmin} sx={{ p: 0, color: "white" }}>
+                                <AdminPanelSettingsIcon />
                             </IconButton>
                         </Tooltip>
                     </Box>
