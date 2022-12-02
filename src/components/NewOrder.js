@@ -12,30 +12,48 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from 'react';
 
 
 import { CRUDService, ORDERS } from "../service/CRUDService";
 
 const theme = createTheme();
 
-const currentCar = localStorage.getItem("currentCar");
-const currentCarMap = new Map(JSON.parse(currentCar));
+const ORDER_SAVED_MSG = "The order has been successfully saved!"
 
 export default function NewOrder() {
 
-    const [cards, setItems] = useState(currentCarMap)
-    const card = {
-        name: "Articulo X",
-        description: "Descripcion de articulo X",
-        price: 100.0,
-        itemId: "1",
-        url: "https://www.img2link.com/images/2022/12/02/62c7b1836f078da0f211f11a3d68eee8.jpg"
+    const [itemsQuantity, setItemsQuantity] = useState([])
+
+    const currentCar = localStorage.getItem("currentCar");
+    const currentCarMap = new Map(JSON.parse(currentCar));
+
+    const carMapToList = (map) => {
+        var carList = []
+        for (let values of map.values()) {
+            carList.push(values)
+        }
+        return carList
     }
 
-    const getCardItem = (item) => {
-        console.log(item)
+    const createOrder = () => {
+        const order = {
+            "status": "PENDING",
+            "userId": JSON.parse(localStorage.getItem("currentUser")).id,
+            "orderItems": itemsQuantity
+        }
+
+        let response = CRUDService.post(order, ORDERS).then((response)=>{
+            alert(ORDER_SAVED_MSG)
+        })
+
+        localStorage.setItem("currentCar", null)
     }
+
+    useLayoutEffect(() => {
+        setItemsQuantity(carMapToList(currentCarMap))
+    }, []);
+
 
     return (
         <div className="NewOrder">
@@ -59,26 +77,29 @@ export default function NewOrder() {
                     </Box>
                     <Container sx={{ py: 8 }} maxWidth="md">
                         <Grid container spacing={4}>
-                            {[{}].map((item) => (
-                                <Grid item key={card.itemId} xs={12} sm={6} md={4}>
+                            {itemsQuantity.map((itemQuantity) => (
+                                <Grid item key={itemQuantity.item.itemId} xs={12} sm={6} md={4}>
                                     <Card
                                         sx={{ display: 'flex', flexDirection: 'column' }}
                                     >
                                         <CardMedia
                                             component="img"
 
-                                            image={card.url}
+                                            image={itemQuantity.item.url}
                                             alt="random"
                                         />
                                         <CardContent sx={{ flexGrow: 1 }}>
                                             <Typography gutterBottom variant="h5" component="h2">
-                                                <strong>{card.name}</strong>
+                                                <strong>{itemQuantity.item.name}</strong>
                                             </Typography>
                                             <Typography>
-                                                {card.description}
+                                                {itemQuantity.item.description}
                                             </Typography>
                                             <Typography>
-                                                <strong>${card.price}</strong>
+                                                <strong>${itemQuantity.item.price}</strong>
+                                            </Typography>
+                                            <Typography>
+                                                <strong>Quantity: {itemQuantity.quantity}</strong>
                                             </Typography>
                                         </CardContent>
                                     </Card>
@@ -86,6 +107,19 @@ export default function NewOrder() {
                             ))}
                         </Grid>
                     </Container>
+                    <Box sx={{ mt: 3 }}>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            id='saveBtn'
+                            onClick={createOrder}
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Order now
+                        </Button>
+
+                    </Box>
                 </Container>
             </ThemeProvider>
         </div>

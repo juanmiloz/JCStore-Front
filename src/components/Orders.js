@@ -19,9 +19,17 @@ import Select from '@mui/material/Select';
 import { useState, useEffect } from 'react';
 
 import { CRUDService, ORDERS } from '../service/CRUDService';
+import { ROLE_BUYER } from '../constants/Roles';
 import { Button } from '@mui/material';
 
 const ORDER_UPDATED_MSG = "The order's status has been updated successfully!"
+
+function isAdmin(roleId){
+    console.log(ROLE_BUYER)
+    console.log(roleId);
+    console.log(roleId == ROLE_BUYER)
+    return roleId == ROLE_BUYER;
+}
 
 export default function Orders() {
 
@@ -52,10 +60,18 @@ export default function Orders() {
     }
 
     useEffect(() => {
-        CRUDService.getAll(ORDERS)
+        const id = JSON.parse(localStorage.getItem("currentUser")).id
+        if(isAdmin(id)){
+            CRUDService.getAll(ORDERS)
             .then(async (res) => {
                 setOrders(res)
             })
+        }else{
+            CRUDService.getOne(ORDERS, 'users/' + id)
+            .then(async (res) => {
+                setOrders(res)
+            })
+        }
     })
 
 

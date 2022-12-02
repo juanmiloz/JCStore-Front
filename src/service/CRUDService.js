@@ -19,6 +19,16 @@ export class CRUDService {
         ).then(res => res.data);
     }
 
+    static getOne(serviceRoute, itemId) {
+
+        const url = this.baseUrl + serviceRoute + '/' + itemId
+        const config = this.getHeaderConfig();
+        
+        return axios.get(
+            url, config
+        ).then(res => res.data);
+    }  
+
     static post(newItem, serviceRoute) {
 
 
