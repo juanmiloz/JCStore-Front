@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import Tooltip from '@mui/material/Tooltip';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'
 
@@ -43,6 +43,10 @@ function ResponsiveAppBar() {
         localStorage.removeItem("currentUser");
         localStorage.removeItem("webToken");
         navigate("/")
+    }
+
+    const handlerNewOrder = () => {
+        navigate('NewOrder')
     }
 
     const userRole = async () =>{
@@ -158,8 +162,8 @@ function ResponsiveAppBar() {
 
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Add to car">
-                            <IconButton size="medium" sx={{ p: 0, color: "white" }}>
-                                <AddShoppingCartIcon />
+                            <IconButton size="medium" onClick={handlerNewOrder} sx={{ p: 0, color: "white" }}>
+                                <ShoppingCartIcon />
                             </IconButton>
                         </Tooltip>
                     </Box>

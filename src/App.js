@@ -7,6 +7,7 @@ import AddItem from './components/AddItem';
 import NotFound from './components/NotFound';
 import Products from './components/Products';
 import Orders from './components/Orders';
+import NewOrder from './components/NewOrder';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path='AddItem' element={<AddItem />} />
           <Route path='Products' element={<Products />} />
           <Route path='MyOrders' element={<Orders />} />
+          <Route path='NewOrder' element={<NewOrder />}/>
         </Route>
         <Route path='/*' element={<NotFound />} />
       </Routes>
