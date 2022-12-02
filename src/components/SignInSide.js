@@ -10,8 +10,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CRUDService, LOGIN} from '../service/CRUDService';
+import { CRUDService, LOGIN, USERS} from '../service/CRUDService';
 import { useNavigate } from 'react-router-dom'
+import jwt_decode from 'jwt-decode'
+
 
 function Copyright(props) {
   return (
@@ -42,9 +44,16 @@ export default function SignInSide() {
     
     
     const response = await CRUDService.post(login, LOGIN);
-    if(response.token != null){
+    var token = response.token
+    if(token != null){
       localStorage.setItem("webToken",response.token)
-      navigate('/JCStore')
+      var userId = jwt_decode(token).userId   
+
+      await CRUDService.getOne(USERS, userId).then((resService) => {
+        if(resService.id == userId){
+          navigate('/JCStore')
+        }
+      });
     }
 
   };
