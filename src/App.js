@@ -6,6 +6,7 @@ import JCStore from './components/JCStore';
 import AddItem from './components/AddItem';
 import NotFound from './components/NotFound';
 import Products from './components/Products';
+import ListUsers from './components/TableUsers'
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path='AddItem' element={<AddItem />} />
           <Route path='Products' element={<Products />} />
           <Route path='MyOrders' element={"Componente my orders"} />
+          <Route path='ListUsers' element={<ListUsers/>} />
         </Route>
         <Route path='/*' element={<NotFound />} />
       </Routes>
