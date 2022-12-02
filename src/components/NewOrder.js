@@ -1,10 +1,7 @@
 import * as React from "react";
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Box from '@mui/material/Box';
@@ -44,7 +41,7 @@ export default function NewOrder() {
             "orderItems": itemsQuantity
         }
 
-        let response = CRUDService.post(order, ORDERS).then((response)=>{
+        CRUDService.post(order, ORDERS).then((response)=>{
             alert(ORDER_SAVED_MSG)
         })
 

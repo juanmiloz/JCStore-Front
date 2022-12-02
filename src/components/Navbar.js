@@ -17,12 +17,13 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom'
 
-const pages = ['Products', 'My orders', 'Add Item'];
+const pages = ['Products', 'My orders', 'Add Item', 'List Users'];
 const roleBuyer = "7832c0fe-d0f0-425a-8d36-d32693c57aff";
 const roleAdmin = "cbe5ea52-0edb-4d2e-a883-1488f1520b20";
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const [isAdmin, setIsAdmin] = React.useState(true)
     const navigate = useNavigate()
 
     const handleOpenNavMenu = (event) => {
@@ -39,6 +40,10 @@ function ResponsiveAppBar() {
 
     const handleAddItemNavMenu = () => {
         navigate("AddItem")
+    };
+
+    const handleListClientsNavMenu = () => {
+        navigate("ListUsers")
     };
 
     const handlerLogoutMenu = () => {
@@ -61,15 +66,20 @@ function ResponsiveAppBar() {
 
     const userRole = async () =>{
         var currentUser = await JSON.parse(localStorage.getItem("currentUser"))
-    
-        if(currentUser.role.roleId === roleBuyer){
+        var currentRole = await currentUser.role.roleId
+
+        if (currentRole === roleBuyer) {
+            setIsAdmin(false)
             console.log("cliente")
-        }else if(currentUser.role.roleId === roleAdmin){
+        } else if (currentRole === roleAdmin) {
+            setIsAdmin(true)
             console.log("admin")
         }
     }
-
-    userRole();
+    setTimeout(()=>{
+        userRole(); 
+    }, 2000)
+    
 
     return (
         <AppBar position="static">
@@ -148,26 +158,40 @@ function ResponsiveAppBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button
-                                key={"products"}
-                                onClick={handleProductsNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                products
+                            key={"products"}
+                            onClick={handleProductsNavMenu}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            products
                         </Button>
                         <Button
-                                key={"myOrders"}
-                                onClick={handleMyOrdersNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                MyOrders
+                            key={"myOrders"}
+                            onClick={handleMyOrdersNavMenu}
+                            sx={{ my: 2, color: 'white', display: 'block' }}
+                        >
+                            MyOrders
                         </Button>
-                        <Button
-                                key={"addProduct"}
-                                onClick={handleAddItemNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                Add Products
-                        </Button>
+                        {
+                            isAdmin ?
+                                <div className='div-admin-function'>
+                                    <Button
+                                        key={"addProduct"}
+                                        onClick={handleAddItemNavMenu}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        Add Products
+                                    </Button>
+                                    <Button
+                                        key={"listClients"}
+                                        onClick={handleListClientsNavMenu}
+                                        sx={{ my: 2, color: 'white', display: 'block' }}
+                                    >
+                                        List Clients
+                                    </Button>
+                                </div>
+                                :
+                                null
+                        }
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -191,9 +215,9 @@ function ResponsiveAppBar() {
                             </IconButton>
                         </Tooltip>
                     </Box>
-                    <Box sx={{ flexGrow: 0, paddingLeft: 2}}>
+                    <Box sx={{ flexGrow: 0, paddingLeft: 2 }}>
                         <Tooltip title="Log out">
-                            <IconButton size="medium"onClick={handlerLogoutMenu} sx={{ p: 0, color: "white" }}>
+                            <IconButton size="medium" onClick={handlerLogoutMenu} sx={{ p: 0, color: "white" }}>
                                 <LogoutIcon></LogoutIcon>
                             </IconButton>
                         </Tooltip>

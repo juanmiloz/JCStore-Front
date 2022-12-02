@@ -36,7 +36,7 @@ export default function SignUp() {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    
+
     /*
     let url = "http://localhost:8080/users"
     var res = await fetch(url, {
@@ -64,22 +64,25 @@ export default function SignUp() {
     const newUser = {
       "name": data.get('name'),
       "age": data.get('age'),
-      "email": data.get('email'),
+      "email": (data.get('email') === "") ? null : data.get('email'),
       "password": data.get('password'),
       "address": data.get('address'),
-      "phone": data.get('phone'),
+      "phone": (data.get('phone') === "") ? null : data.get('phone'),
       "roleId": "7832c0fe-d0f0-425a-8d36-d32693c57aff",
     }
 
-    const response = await CRUDService.post(newUser, USERS);
+    await CRUDService.post(newUser, USERS).then(async (res) => {
+      //An easy way (maybe not the best) to check if the post request succeeded 
+      //since the method returns either the user that has just been saved or the error
+      var response = await res
+      console.log(response)
+      if (newUser.email === response.email) {
+        navigate('/')
+      } else {
+        //mantener en la misma pantalla
+      }
+    });
 
-    //An easy way (maybe not the best) to check if the post request succeeded 
-    //since the method returns either the user that has just been saved or the error
-    if (newUser.email === response.email) {
-      navigate('/')
-    } else {
-      
-    }
 
 
   };

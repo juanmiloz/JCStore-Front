@@ -21,11 +21,15 @@ export default function JCStore() {
             }
         })
         const answer = await res.json()
+        console.log(answer)
         
         localStorage.setItem("currentUser",JSON.stringify(answer))
     }
     
-    getUser();
+    setTimeout(()=>{
+        getUser()
+    }, 1000)
+    
 
     return (
         <div>

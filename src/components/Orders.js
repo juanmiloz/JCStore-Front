@@ -19,16 +19,13 @@ import Select from '@mui/material/Select';
 import { useState, useEffect } from 'react';
 
 import { CRUDService, ORDERS } from '../service/CRUDService';
-import { ROLE_BUYER } from '../constants/Roles';
+import { ROLE_ADMIN } from '../constants/Roles';
 import { Button } from '@mui/material';
 
 const ORDER_UPDATED_MSG = "The order's status has been updated successfully!"
 
 function isAdmin(roleId){
-    console.log(ROLE_BUYER)
-    console.log(roleId);
-    console.log(roleId == ROLE_BUYER)
-    return roleId == ROLE_BUYER;
+    return roleId === ROLE_ADMIN;
 }
 
 export default function Orders() {
@@ -53,7 +50,7 @@ export default function Orders() {
     const updateOrder = () => {
 
         const orderStatus = {"status": newStatus}
-        let response = CRUDService.patch(currentOrder.orderId, orderStatus, ORDERS).then( (response) => {
+        CRUDService.patch(currentOrder.orderId, orderStatus, ORDERS).then( (response) => {
             alert(ORDER_UPDATED_MSG)
         });
 
