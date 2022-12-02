@@ -55,6 +55,10 @@ function ResponsiveAppBar() {
         navigate('NewAdmin')
     }
 
+    const handlerUsers = () => {
+        navigate('Users')
+    }
+
     const userRole = async () =>{
         var currentUser = await JSON.parse(localStorage.getItem("currentUser"))
     
@@ -175,7 +179,7 @@ function ResponsiveAppBar() {
                     </Box>
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Users">
-                            <IconButton size="medium" onClick={handlerNewAdmin} sx={{ p: 0, color: "white" }}>
+                            <IconButton size="medium" onClick={handlerUsers} sx={{ p: 0, color: "white" }}>
                                 <PersonIcon />
                             </IconButton>
                         </Tooltip>

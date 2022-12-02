@@ -9,6 +9,8 @@ import Products from './components/Products';
 import Orders from './components/Orders';
 import NewOrder from './components/NewOrder';
 import CreateUser from './components/CreateUser';
+import Users from './components/Users';
+
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           <Route path='MyOrders' element={<Orders />} />
           <Route path='NewOrder' element={<NewOrder />}/>
           <Route path='NewAdmin' element={<CreateUser />}/>
+          <Route path='Users' element={<Users />}/>
         </Route>
         <Route path='/*' element={<NotFound />} />
       </Routes>
