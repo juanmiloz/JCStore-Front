@@ -26,7 +26,6 @@ export default function Products() {
 
   const saveItemInLocalStorage = (item) =>{
 
-    
 
     let currentCar = localStorage.getItem("currentCar");
 
@@ -50,18 +49,10 @@ export default function Products() {
 
       }
 
-
-
     }
 
     let currentCarSerialized = JSON.stringify(Array.from(currentCarMap.entries()));
-           console.log(currentCarSerialized);
-      localStorage.setItem("currentCar", currentCarSerialized);
-
-
-
-
-
+    localStorage.setItem("currentCar", currentCarSerialized);
   }
 
 
@@ -74,9 +65,9 @@ export default function Products() {
       currentCarMap.set(item.itemId, itemTuple);
   }
 
-const [currentCards, setCurrentCards] = useState([]);
+  const [currentCards, setCurrentCards] = useState([]);
 
-useEffect(() => {
+  useEffect(() => {
   CRUDService.getAll(ITEMS).then((items)=>{
       setCurrentCards(items);
   });
