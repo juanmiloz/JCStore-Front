@@ -24,6 +24,56 @@ const theme = createTheme();
 
 export default function Products() {
 
+  const saveItemInLocalStorage = (item) =>{
+
+    
+
+    let currentCar = localStorage.getItem("currentCar");
+
+    let currentCarMap = new Map();
+
+    if(currentCar == null){
+      createItemInCar(item, currentCarMap);
+
+    }else{
+
+      currentCarMap = new Map(JSON.parse(currentCar));
+      if(currentCarMap.get(item.itemId)==null){
+        createItemInCar(item, currentCarMap);
+      }else{
+        let quantity = currentCarMap.get(item.itemId).quantity;
+        let itemTuple = {
+          item,
+          "quantity":quantity+1
+        }
+        currentCarMap.set(item.itemId, itemTuple)
+
+      }
+
+
+
+    }
+
+    let currentCarSerialized = JSON.stringify(Array.from(currentCarMap.entries()));
+           console.log(currentCarSerialized);
+      localStorage.setItem("currentCar", currentCarSerialized);
+
+
+
+
+
+  }
+
+
+  const createItemInCar = (item, currentCarMap) =>{
+    
+      let itemTuple = {
+        item,
+        "quantity":1
+      }
+      currentCarMap.set(item.itemId, itemTuple);
+  }
+
 const [currentCards, setCurrentCards] = useState([]);
 
 useEffect(() => {
@@ -66,7 +116,9 @@ useEffect(() => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small">Add to car</Button>
+                    <Button size="small" onClick={()=>{
+                      saveItemInLocalStorage(card)
+                    }}>Add to car</Button>
            
                   </CardActions>
                 </Card>
