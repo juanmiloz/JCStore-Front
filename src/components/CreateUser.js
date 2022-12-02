@@ -60,7 +60,7 @@ export default function CreateUser() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        New Admin
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
@@ -127,15 +127,9 @@ export default function CreateUser() {
                             id='submitBtn'
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign Up
+                            Create
                         </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="/" variant="body2">
-                                    Already have an account? Sign in
-                                </Link>
-                            </Grid>
-                        </Grid>
+                        
                     </Box>
                 </Box>
             </Container>
