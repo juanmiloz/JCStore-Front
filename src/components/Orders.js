@@ -84,6 +84,7 @@ export default function Orders() {
                             <TableCell align="right"><b>User Id</b></TableCell>
                             <TableCell align="right"><b>Items</b></TableCell>
                             <TableCell align="right"><b></b></TableCell>
+                            <TableCell align="right"><b></b></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -105,6 +106,13 @@ export default function Orders() {
                                         setCurrentOrder(order)
                                     }}>
                                         Edit
+                                    </Button>
+                                </TableCell>
+                                <TableCell align="right">
+                                    <Button variant="contained" color="error" onClick={() => {
+                                        setCurrentOrder(order)
+                                    }}>
+                                        Cancel
                                     </Button>
                                 </TableCell>
                             </TableRow>

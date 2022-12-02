@@ -34,21 +34,41 @@ export default function NewOrder() {
         return carList
     }
 
-    const createOrder = () => {
+    const createOrder = async () => {
         const order = {
             "status": "PENDING",
             "userId": JSON.parse(localStorage.getItem("currentUser")).id,
             "orderItems": itemsQuantity
         }
 
-        CRUDService.post(order, ORDERS).then((response)=>{
+        let res = await CRUDService.post(order, ORDERS).then((response)=>{
+            console.log(response);
             alert(ORDER_SAVED_MSG)
         })
-
         localStorage.setItem("currentCar", null)
-        setFinalOrder(response)
+        setFinalOrder(res)
+        componentResume()
     }
 
+    const componentResume = () => {
+        return(
+            <Box
+            sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+            }}
+        >
+            <Typography component="h1" variant="h5">
+                {"Total: " + finalOrder.total}
+            </Typography>
+            <Typography component="p">
+                Your order has been confirmed
+            </Typography>
+        </Box>
+        );
+    } 
 
 
     useLayoutEffect(() => {
@@ -121,23 +141,7 @@ export default function NewOrder() {
                         </Button>
 
                     </Box>
-                    {finalOrder != null &&
-                    <Box
-                        sx={{
-                            marginTop: 8,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography component="h1" variant="h5">
-                            Total: {finalOrder.total}
-                        </Typography>
-                        <Typography component="p">
-                            Your order has been confirmed
-                        </Typography>
-                    </Box>
-                    }
+                    {componentResume()}
                 </Container>
             </ThemeProvider>
         </div>
