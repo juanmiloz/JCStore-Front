@@ -47,28 +47,8 @@ export default function NewOrder() {
         })
         localStorage.setItem("currentCar", null)
         setFinalOrder(res)
-        componentResume()
     }
 
-    const componentResume = () => {
-        return(
-            <Box
-            sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
-        >
-            <Typography component="h1" variant="h5">
-                {"Total: " + finalOrder.total}
-            </Typography>
-            <Typography component="p">
-                Your order has been confirmed
-            </Typography>
-        </Box>
-        );
-    } 
 
 
     useLayoutEffect(() => {
@@ -141,7 +121,7 @@ export default function NewOrder() {
                         </Button>
 
                     </Box>
-                    {componentResume()}
+                    
                 </Container>
             </ThemeProvider>
         </div>

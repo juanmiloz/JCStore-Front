@@ -24,8 +24,9 @@ import { Button } from '@mui/material';
 
 const ORDER_UPDATED_MSG = "The order's status has been updated successfully!"
 
-function isAdmin(roleId){
-    return roleId === ROLE_ADMIN;
+async function isRoleAdmin() {
+    const roleId = await JSON.parse(localStorage.getItem("currentUser")).role.roleId
+    return roleId == ROLE_ADMIN;
 }
 
 export default function Orders() {
@@ -34,6 +35,7 @@ export default function Orders() {
     const [currentOrder, setCurrentOrder] = useState(null)
     const [newStatus, setNewStatus] = useState('')
     const [open, setOpen] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(isRoleAdmin())
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -49,25 +51,36 @@ export default function Orders() {
 
     const updateOrder = () => {
 
-        const orderStatus = {"status": newStatus}
-        CRUDService.patch(currentOrder.orderId, orderStatus, ORDERS).then( (response) => {
+        const orderStatus = { "status": newStatus }
+        CRUDService.patch(currentOrder.orderId, orderStatus, ORDERS).then((response) => {
             alert(ORDER_UPDATED_MSG)
         });
 
     }
 
+    const cancelOrder = async () => {
+        console.log(currentOrder);
+        var orderId = await currentOrder.orderId
+        if (currentOrder.status === 'PENDING') {
+            const orderStatus = { "status": "CANCELED" }
+            CRUDService.patch('cancel/' + orderId, orderStatus, ORDERS).then((response) => {
+                alert('Order has been canceled')
+            })
+        }
+    }
+
     useEffect(() => {
-        const id = JSON.parse(localStorage.getItem("currentUser")).id
-        if(isAdmin(id)){
+        if (isAdmin) {
             CRUDService.getAll(ORDERS)
-            .then(async (res) => {
-                setOrders(res)
-            })
-        }else{
+                .then(async (res) => {
+                    setOrders(res)
+                })
+        } else {
+            const id = JSON.parse(localStorage.getItem("currentUser")).id;
             CRUDService.getOne(ORDERS, 'users/' + id)
-            .then(async (res) => {
-                setOrders(res)
-            })
+                .then(async (res) => {
+                    setOrders(res)
+                })
         }
     })
 
@@ -111,6 +124,7 @@ export default function Orders() {
                                 <TableCell align="right">
                                     <Button variant="contained" color="error" onClick={() => {
                                         setCurrentOrder(order)
+                                        cancelOrder()
                                     }}>
                                         Cancel
                                     </Button>
