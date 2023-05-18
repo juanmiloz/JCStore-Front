@@ -85,9 +85,7 @@ export class CRUDService {
         const config = {
             headers: { Authorization: 'Bearer '+ webToken}
         };
-
         return config;
-
     }
 
     

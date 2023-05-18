@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CRUDService, LOGIN, USERS} from '../service/CRUDService';
 import { useNavigate } from 'react-router-dom'
 import jwt_decode from 'jwt-decode'
+import { Container } from '@mui/system';
 
 
 function Copyright(props) {
@@ -144,4 +145,10 @@ export default function SignInSide() {
       </Grid>
     </ThemeProvider>
   );
+}
+
+function Carousel(){
+  return(<Container>
+    <div></div>
+  </Container>);
 }
